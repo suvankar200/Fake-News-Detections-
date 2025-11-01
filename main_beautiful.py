@@ -27,8 +27,8 @@ load_dotenv()
 class AppConfig:
     """Application configuration and settings"""
     
-    # API Configuration - Load from environment variables
-    GEMINI_API_KEY = os.getenv('GEMINI_API_KEY', '')
+    # API Configuration - Load from environment variables or Streamlit secrets
+    GEMINI_API_KEY = st.secrets.get('GEMINI_API_KEY', os.getenv('GEMINI_API_KEY', ''))
     
     # Application Settings
     APP_TITLE = "🇮🇳 Indian News Verifier"
@@ -77,8 +77,10 @@ class IndianNewsVerifier:
         """Private method to setup Advanced AI with error handling"""
         try:
             if not AppConfig.GEMINI_API_KEY:
-                st.error("🚫 No API key found! Please add GEMINI_API_KEY to your .env file")
-                st.info("💡 Create a .env file with: GEMINI_API_KEY=your_api_key_here")
+                st.error("🚫 No API key found!")
+                st.warning("📝 **For Streamlit Cloud:** Add GEMINI_API_KEY in your app's Secrets (⚙️ Settings → Secrets)")
+                st.info("💡 **For local development:** Create a .env file with: GEMINI_API_KEY=your_api_key_here")
+                st.code("GEMINI_API_KEY = \"your_api_key_here\"", language="toml")
                 return
             
             # Configure AI API

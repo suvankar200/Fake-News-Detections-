@@ -1,0 +1,12 @@
+services:
+  - type: web
+    name: indian-news-verifier
+    env: docker
+    dockerfilePath: ./Dockerfile
+    plan: free
+    envVars:
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: PORT
+        value: 8501
+    healthCheckPath: /_stcore/health
